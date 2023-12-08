@@ -1,12 +1,12 @@
 {
   "AzureSpeechResource": {
-    "Region": "westus2",
-    "SubscriptionKey": "<your key here> note you must create the US west Resource in Azure to get this" 
+    "Region": "eastus",
+    "SubscriptionKey": "40c9a21dddee429b86775c71351c57ad" 
   },
   "ICEServer": {
     "URL": "turn:relay.communication.microsoft.com:3478",
-    "Username": "You need to run helper script issue-relay-tokens.py to get these values",
-    "Credential": "You need to run helper script issue-relay-tokens.py to get these values"
+    "Username": "by running the issue-key-token.py file you can generate a username and credentials",
+    "Credential": "by running the issue-key-token.py file you can generate a username and credentials"
   },
   "TTSConfiguration": {
     "Voice": "en-US-JennyNeural",

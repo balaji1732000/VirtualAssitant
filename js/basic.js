@@ -1,15 +1,17 @@
-// At the top of your main JS fileVoic
-window.OPENAI_API_KEY = window.OPENAI_API_KEY || null;
 
-// Later in your code when you assign it
-fetch('./js/config.json')
-  .then((response) => response.json())
-  .then(async (config) => {
-    window.OPENAI_API_KEY = config.OPENAI_API_KEY; // Assigning the value without redeclaring
-  })
-  .catch((error) => {
-    console.error('Error loading config.json:', error);
-  });
+
+// At the top of your main JS fileVoic
+// window.OPENAI_API_KEY = window.OPENAI_API_KEY || null;
+
+// // Later in your code when you assign it
+// fetch('./js/config.json')
+//   .then((response) => response.json())
+//   .then(async (config) => {
+//     window.OPENAI_API_KEY = config.OPENAI_API_KEY; // Assigning the value without redeclaring
+//   })
+//   .catch((error) => {
+//     console.error('Error loading config.json:', error);
+//   });
 
 
 //___RPOMPT_____________________________________________________________________________________________________________________________________
@@ -23,11 +25,60 @@ let conversationHistory = [];
 function initializeConversation() {
     const systemMessage = {
         role: "system",
-        content: "You are Dell Corporation Laptop Web Site Sales Assitant with expert Laptop product knowledge.  You share typical uses cases for the various products and can you offer recommendations for products in response to customore needs."   
+        content: "You are a IT technical support assistance, given a user issue help the user with the resolution steps"   
     };
     conversationHistory = [systemMessage];
 }
 
+// const endpoint = "https://dwspoc.openai.azure.com/";
+// const client = new OpenAIClient(endpoint, new AzureKeyCredential(""));
+
+// const deploymentId = "GPT4";
+
+// const messages = conversationHistory
+
+// console.log(`Messages: ${messages.map((m) => m.content).join("\n")}`);
+
+// const response = await client.listChatCompletions(deploymentId, messages, { maxTokens: 128 });
+
+
+
+//   Make the API request
+//   const response = await fetch('https://dwspoc.openai.azure.com/openai/deployments/GPTDavinci/completions?api-version=2022-12-01', {
+//     method: 'POST',
+//     headers: {
+//       'Authorization': `Bearer ${bd38ee31e244408cacab3e1dd4c32221}`,
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+  
+//       messages: conversationHistory,
+//       temperature: 0.5,
+//     }),
+//   });
+
+//       const url = "https://dwspoc.openai.azure.com/openai/deployments/GPTDavinci/completions?api-version=2022-12-01";
+
+//       // Set the headers with the API key and content type
+//       const headers = {
+//         "Content-Type": "application/json", 
+//         "api-key": "bd38ee31e244408cacab3e1dd4c32221"
+//       };
+  
+  
+//       // Make the API request
+//       const response = await fetch(url, {
+//         method: 'POST',
+//         headers: headers,
+//         body: JSON.stringify({
+//           "messages": conversationHistory,
+//           "max_tokens": 100,
+//           "temperature": 0.7,
+//           "top_p": 1,
+//           "stop": null,
+//         }),
+//       });
+      
 // Function to fetch response from OpenAI
 async function fetchOpenAIResponse(userMessage) {
   // Initialize conversation if it's empty
@@ -41,26 +92,81 @@ async function fetchOpenAIResponse(userMessage) {
   // Ensure the conversation history does not exceed token limits
   manageConversationHistory();
 
-  // Make the API request
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+
+
+
+  let url = "https://dwspoc.openai.azure.com/openai/deployments/GPT4/chat/completions?api-version=2023-03-15-preview"
+  let body = JSON.stringify({
+      messages: conversationHistory
+  })
+
+  
+
+//     const response = await fetch("https://dwspoc.openai.azure.com/openai/deployments/GPT4/chat/completions?api-version=2023-07-01-preview", {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'api-key': `bd38ee31e244408cacab3e1dd4c32221`
+//     },
+//     body: JSON.stringify({
+//       eengine:"GPT4",
+//       messages : conversationHistory,
+//       temperature:0.7,
+//       max_tokens:800,
+//       top_p:0.95,
+//       frequency_penalty:0,
+//       presence_penalty:0,
+//     })
+
+
+//  });
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers:{
       'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: conversationHistory,
-      temperature: 0.5,
-    }),
-  });
+      'api-key': `bd38ee31e244408cacab3e1dd4c32221`
+      },
+      body: JSON.stringify({
+        messages: conversationHistory,
+      })
+
+    })
+
+
 
   // Handle response
   if (!response.ok) {
     throw new Error(`OpenAI API request failed with status ${response.status}`);
   }
 
-  // Process and return data
+
+
+
+// //   Process and return data
+//   this.openAiApi = new OpenAIApi(
+//     new Configuration({
+//       apiKey: this.apiKey,
+//       // add azure info into configuration
+//       azure: {
+//           apiKey: 'bd38ee31e244408cacab3e1dd4c32221',
+//           endpoint: 'https://dwspoc.openai.azure.com/',
+//           // deploymentName is optional, if you donot set it, you need to set it in the request parameter
+    
+//       }
+//     })
+//   )
+
+//   const response = await this.openAiApi.createCompletion({
+//     model: 'GPT4',
+//     messages: conversationHistory,
+//     max_tokens: 100,
+//     top_p: 1,
+//     frequency_penalty: 0,
+//     presence_penalty: 0
+//   });
+
+  
   const data = await response.json();
   const assistantMessage = data.choices[0].message.content.trim();
   conversationHistory.push({ role: "assistant", content: assistantMessage });
@@ -205,6 +311,7 @@ function scrollToBottom(elementId) {
         // Clear the processing indicator before streaming the response
         stopProcessingIndicator();
   
+        
         // Stream the response text
         streamResponseText('openAIResponse', response, 50);
         console.log("Received response from OpenAI:", response);
@@ -263,7 +370,7 @@ function handleConfiguration(loadedConfig) {
     console.log('Configuration loaded:', loadedConfig);
 
     // Call the function to start the session or perform other actions
-    //startSession();
+    startSession();
 };
 
 // Asynchronously load the configuration on startup
@@ -483,7 +590,7 @@ window.startSession = () => {
     }
   
     // Create the SpeechSDK configuration
-    const speechSynthesisConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, cogSvcRegion);
+    const speechSynthesisConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey,cogSvcRegion);
     speechSynthesisConfig.endpointId = config.TTSConfiguration.CustomVoiceEndpointId;
     speechSynthesisConfig.speechSynthesisVoiceName = config.TTSConfiguration.Voice;
 

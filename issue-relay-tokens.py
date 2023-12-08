@@ -7,8 +7,8 @@ try:
     print("Azure Communication Services - Access Relay Configuration Quickstart")
 
     # Authentication setup
-    connection_str = "endpoint=https://azureavatarcommsvs.unitedstates.communication.azure.com/;accesskey=VkPFqKJxByFA1t76K/dTOU3TnA4hjFr/TikQ/mDhCyokijf/z+6XlSJtop2byhIKqrM9JNV5XtKQnKOaMj55HQ=="
-    endpoint = "https://azureavatarcommsvs.unitedstates.communication.azure.com"
+    connection_str = "endpoint=https://speechservice.india.communication.azure.com/;accesskey=T1/W73JtyEloRKUfuJT0Dutv0XwrPv3qloeWQS9TkKPkmkKO945EfdWuiAXJI4nz6CE766SW10GA/ywo55vYXA=="
+    endpoint = "https://speechservice.india.communication.azure.com/"
 
     # Initialize the Communication Identity Client using the connection string
     identity_client = CommunicationIdentityClient.from_connection_string(connection_str)
@@ -18,7 +18,7 @@ try:
 
     # Creating a user
     user = identity_client.create_user()
-    
+
     # Initialize the Communication Relay Client
     relay_client = CommunicationRelayClient.from_connection_string(connection_str)
 
@@ -28,14 +28,13 @@ try:
     # Processing ICE Server Information
     for iceServer in relay_configuration.ice_servers:
         if iceServer.username:
-            print('Username: ' + iceServer.username)
+            print("Username: " + iceServer.username)
         if iceServer.credential:
-            print('Credential: ' + iceServer.credential)
+            print("Credential: " + iceServer.credential)
         if iceServer.urls:
             for url in iceServer.urls:
-                print('Url:' + url)
+                print("Url:" + url)
 
 except Exception as ex:
     print("Exception:")
     print(ex)
-

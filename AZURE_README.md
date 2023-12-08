@@ -68,7 +68,7 @@ This sample demonstrates the chat scenario, with integration of Azure speech-to-
 
 * Step 4: Click `Start Microphone` button to start microphone (make sure to allow the microphone access tip box popping up in the browser), and then you can start chatting with the avatar with speech. The chat history (the text of what you said, and the response text by the Azure OpenAI chat API) will be shown beside the avatar. The avatar will then speak out the response of the chat API.
 
-* Step 5: If you want to clear the chat history and start a new round of chat, you can click `Clear Chat History` button. And if you want to stop the avatar service, please click `Close Video Connection` button to close the connection with avatar service. 
+* Step 5: If you want to clear the chat history and start a new round of chat, you can click `Clear Chat History` button. And if you want to stop the avatar service, please click `Close Video Connection` button to close the connection with avatar service.
 
 # Additional Tip(s)
 
